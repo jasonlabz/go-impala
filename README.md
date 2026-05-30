@@ -19,7 +19,7 @@ Issues and contributions are welcome.
 
 ## Install
 
-go get github.com/bippio/go-impala
+go get github.com/jasonlabz/go-impala
 
 
 ## Connection Parameters and DSN
@@ -76,7 +76,7 @@ import (
 	"database/sql"
 	"log"
 
-	impala "github.com/bippio/go-impala"
+	impala "github.com/jasonlabz/go-impala"
 )
 
 func main() {
