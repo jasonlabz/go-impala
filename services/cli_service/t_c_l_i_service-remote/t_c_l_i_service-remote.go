@@ -6,14 +6,14 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	thrift "github.com/apache/thrift/lib/go/thrift"
+	"github.com/jasonlabz/go-impala/services/cli_service"
 	"math"
 	"net"
 	"net/url"
 	"os"
 	"strconv"
 	"strings"
-	thrift "github.com/apache/thrift/lib/go/thrift"
-	"github.com/jasonlabz/go-impala/services/cli_service"
 )
 
 var _ = cli_service.GoUnusedProtection__
@@ -84,7 +84,7 @@ func main() {
 	flag.BoolVar(&useHttp, "http", false, "Use http")
 	flag.Var(headers, "H", "Headers to set on the http(s) request (e.g. -H \"Key: Value\")")
 	flag.Parse()
-	
+
 	if len(urlString) > 0 {
 		var err error
 		parsedUrl, err = url.Parse(urlString)
@@ -101,7 +101,7 @@ func main() {
 			flag.Usage()
 		}
 	}
-	
+
 	cmd := flag.Arg(0)
 	var err error
 	var cfg *thrift.TConfiguration = nil
@@ -158,10 +158,10 @@ func main() {
 		fmt.Fprintln(os.Stderr, "Error opening socket to ", host, ":", port, " ", err)
 		os.Exit(1)
 	}
-	
+
 	switch cmd {
 	case "OpenSession":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "OpenSession requires 1 args")
 			flag.Usage()
 		}
@@ -186,7 +186,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "CloseSession":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "CloseSession requires 1 args")
 			flag.Usage()
 		}
@@ -211,7 +211,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "GetInfo":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetInfo requires 1 args")
 			flag.Usage()
 		}
@@ -236,7 +236,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "ExecuteStatement":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "ExecuteStatement requires 1 args")
 			flag.Usage()
 		}
@@ -261,7 +261,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "GetTypeInfo":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetTypeInfo requires 1 args")
 			flag.Usage()
 		}
@@ -286,7 +286,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "GetCatalogs":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetCatalogs requires 1 args")
 			flag.Usage()
 		}
@@ -311,7 +311,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "GetSchemas":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetSchemas requires 1 args")
 			flag.Usage()
 		}
@@ -336,7 +336,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "GetTables":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetTables requires 1 args")
 			flag.Usage()
 		}
@@ -361,7 +361,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "GetTableTypes":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetTableTypes requires 1 args")
 			flag.Usage()
 		}
@@ -386,7 +386,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "GetColumns":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetColumns requires 1 args")
 			flag.Usage()
 		}
@@ -411,7 +411,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "GetFunctions":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetFunctions requires 1 args")
 			flag.Usage()
 		}
@@ -436,7 +436,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "GetOperationStatus":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetOperationStatus requires 1 args")
 			flag.Usage()
 		}
@@ -461,7 +461,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "CancelOperation":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "CancelOperation requires 1 args")
 			flag.Usage()
 		}
@@ -486,7 +486,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "CloseOperation":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "CloseOperation requires 1 args")
 			flag.Usage()
 		}
@@ -511,7 +511,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "GetResultSetMetadata":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetResultSetMetadata requires 1 args")
 			flag.Usage()
 		}
@@ -536,7 +536,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "FetchResults":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "FetchResults requires 1 args")
 			flag.Usage()
 		}
@@ -561,7 +561,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "GetDelegationToken":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetDelegationToken requires 1 args")
 			flag.Usage()
 		}
@@ -586,7 +586,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "CancelDelegationToken":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "CancelDelegationToken requires 1 args")
 			flag.Usage()
 		}
@@ -611,7 +611,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "RenewDelegationToken":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "RenewDelegationToken requires 1 args")
 			flag.Usage()
 		}
@@ -636,7 +636,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "GetLog":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetLog requires 1 args")
 			flag.Usage()
 		}

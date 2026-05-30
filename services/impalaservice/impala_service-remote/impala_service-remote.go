@@ -6,17 +6,17 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	thrift "github.com/apache/thrift/lib/go/thrift"
+	"github.com/jasonlabz/go-impala/services/beeswax"
+	"github.com/jasonlabz/go-impala/services/cli_service"
+	"github.com/jasonlabz/go-impala/services/impalaservice"
+	"github.com/jasonlabz/go-impala/services/status"
 	"math"
 	"net"
 	"net/url"
 	"os"
 	"strconv"
 	"strings"
-	thrift "github.com/apache/thrift/lib/go/thrift"
-	"github.com/jasonlabz/go-impala/services/status"
-	"github.com/jasonlabz/go-impala/services/beeswax"
-	"github.com/jasonlabz/go-impala/services/cli_service"
-	"github.com/jasonlabz/go-impala/services/impalaservice"
 )
 
 var _ = status.GoUnusedProtection__
@@ -85,7 +85,7 @@ func main() {
 	flag.BoolVar(&useHttp, "http", false, "Use http")
 	flag.Var(headers, "H", "Headers to set on the http(s) request (e.g. -H \"Key: Value\")")
 	flag.Parse()
-	
+
 	if len(urlString) > 0 {
 		var err error
 		parsedUrl, err = url.Parse(urlString)
@@ -102,7 +102,7 @@ func main() {
 			flag.Usage()
 		}
 	}
-	
+
 	cmd := flag.Arg(0)
 	var err error
 	var cfg *thrift.TConfiguration = nil
@@ -159,10 +159,10 @@ func main() {
 		fmt.Fprintln(os.Stderr, "Error opening socket to ", host, ":", port, " ", err)
 		os.Exit(1)
 	}
-	
+
 	switch cmd {
 	case "Cancel":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "Cancel requires 1 args")
 			flag.Usage()
 		}
@@ -187,7 +187,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "CloseInsert":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "CloseInsert requires 1 args")
 			flag.Usage()
 		}
@@ -212,7 +212,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "PingImpalaService":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "PingImpalaService requires 0 args")
 			flag.Usage()
 		}
@@ -220,7 +220,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "query":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "Query requires 1 args")
 			flag.Usage()
 		}
@@ -245,7 +245,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "executeAndWait":
-		if flag.NArg() - 1 != 2 {
+		if flag.NArg()-1 != 2 {
 			fmt.Fprintln(os.Stderr, "ExecuteAndWait requires 2 args")
 			flag.Usage()
 		}
@@ -272,7 +272,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "explain":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "Explain requires 1 args")
 			flag.Usage()
 		}
@@ -297,7 +297,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "fetch":
-		if flag.NArg() - 1 != 3 {
+		if flag.NArg()-1 != 3 {
 			fmt.Fprintln(os.Stderr, "Fetch requires 3 args")
 			flag.Usage()
 		}
@@ -331,7 +331,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_state":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetState requires 1 args")
 			flag.Usage()
 		}
@@ -356,7 +356,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_results_metadata":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetResultsMetadata requires 1 args")
 			flag.Usage()
 		}
@@ -381,7 +381,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "echo":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "Echo requires 1 args")
 			flag.Usage()
 		}
@@ -391,7 +391,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "dump_config":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "DumpConfig requires 0 args")
 			flag.Usage()
 		}
@@ -399,7 +399,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_log":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetLog requires 1 args")
 			flag.Usage()
 		}
@@ -409,7 +409,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_default_configuration":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetDefaultConfiguration requires 1 args")
 			flag.Usage()
 		}
@@ -419,7 +419,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "close":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "Close requires 1 args")
 			flag.Usage()
 		}
@@ -444,7 +444,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "clean":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "Clean requires 1 args")
 			flag.Usage()
 		}

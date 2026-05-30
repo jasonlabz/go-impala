@@ -6,14 +6,14 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	thrift "github.com/apache/thrift/lib/go/thrift"
+	"github.com/jasonlabz/go-impala/services/fb303"
 	"math"
 	"net"
 	"net/url"
 	"os"
 	"strconv"
 	"strings"
-	thrift "github.com/apache/thrift/lib/go/thrift"
-	"github.com/jasonlabz/go-impala/services/fb303"
 )
 
 var _ = fb303.GoUnusedProtection__
@@ -77,7 +77,7 @@ func main() {
 	flag.BoolVar(&useHttp, "http", false, "Use http")
 	flag.Var(headers, "H", "Headers to set on the http(s) request (e.g. -H \"Key: Value\")")
 	flag.Parse()
-	
+
 	if len(urlString) > 0 {
 		var err error
 		parsedUrl, err = url.Parse(urlString)
@@ -94,7 +94,7 @@ func main() {
 			flag.Usage()
 		}
 	}
-	
+
 	cmd := flag.Arg(0)
 	var err error
 	var cfg *thrift.TConfiguration = nil
@@ -151,10 +151,10 @@ func main() {
 		fmt.Fprintln(os.Stderr, "Error opening socket to ", host, ":", port, " ", err)
 		os.Exit(1)
 	}
-	
+
 	switch cmd {
 	case "getName":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "GetName requires 0 args")
 			flag.Usage()
 		}
@@ -162,7 +162,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "getVersion":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "GetVersion requires 0 args")
 			flag.Usage()
 		}
@@ -170,7 +170,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "getStatus":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "GetStatus requires 0 args")
 			flag.Usage()
 		}
@@ -178,7 +178,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "getStatusDetails":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "GetStatusDetails requires 0 args")
 			flag.Usage()
 		}
@@ -186,7 +186,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "getCounters":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "GetCounters requires 0 args")
 			flag.Usage()
 		}
@@ -194,7 +194,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "getCounter":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetCounter requires 1 args")
 			flag.Usage()
 		}
@@ -204,7 +204,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "setOption":
-		if flag.NArg() - 1 != 2 {
+		if flag.NArg()-1 != 2 {
 			fmt.Fprintln(os.Stderr, "SetOption requires 2 args")
 			flag.Usage()
 		}
@@ -216,7 +216,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "getOption":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetOption requires 1 args")
 			flag.Usage()
 		}
@@ -226,7 +226,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "getOptions":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "GetOptions requires 0 args")
 			flag.Usage()
 		}
@@ -234,7 +234,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "getCpuProfile":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetCpuProfile requires 1 args")
 			flag.Usage()
 		}
@@ -249,7 +249,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "aliveSince":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "AliveSince requires 0 args")
 			flag.Usage()
 		}
@@ -257,7 +257,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "reinitialize":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "Reinitialize requires 0 args")
 			flag.Usage()
 		}
@@ -265,7 +265,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "shutdown":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "Shutdown requires 0 args")
 			flag.Usage()
 		}

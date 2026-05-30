@@ -6,15 +6,15 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	thrift "github.com/apache/thrift/lib/go/thrift"
+	"github.com/jasonlabz/go-impala/services/fb303"
+	"github.com/jasonlabz/go-impala/services/hive_metastore"
 	"math"
 	"net"
 	"net/url"
 	"os"
 	"strconv"
 	"strings"
-	thrift "github.com/apache/thrift/lib/go/thrift"
-	"github.com/jasonlabz/go-impala/services/fb303"
-	"github.com/jasonlabz/go-impala/services/hive_metastore"
 )
 
 var _ = fb303.GoUnusedProtection__
@@ -136,7 +136,7 @@ func main() {
 	flag.BoolVar(&useHttp, "http", false, "Use http")
 	flag.Var(headers, "H", "Headers to set on the http(s) request (e.g. -H \"Key: Value\")")
 	flag.Parse()
-	
+
 	if len(urlString) > 0 {
 		var err error
 		parsedUrl, err = url.Parse(urlString)
@@ -153,7 +153,7 @@ func main() {
 			flag.Usage()
 		}
 	}
-	
+
 	cmd := flag.Arg(0)
 	var err error
 	var cfg *thrift.TConfiguration = nil
@@ -210,10 +210,10 @@ func main() {
 		fmt.Fprintln(os.Stderr, "Error opening socket to ", host, ":", port, " ", err)
 		os.Exit(1)
 	}
-	
+
 	switch cmd {
 	case "create_database":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "CreateDatabase requires 1 args")
 			flag.Usage()
 		}
@@ -238,7 +238,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_database":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetDatabase requires 1 args")
 			flag.Usage()
 		}
@@ -248,7 +248,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "drop_database":
-		if flag.NArg() - 1 != 2 {
+		if flag.NArg()-1 != 2 {
 			fmt.Fprintln(os.Stderr, "DropDatabase requires 2 args")
 			flag.Usage()
 		}
@@ -260,7 +260,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_databases":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetDatabases requires 1 args")
 			flag.Usage()
 		}
@@ -270,7 +270,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_all_databases":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "GetAllDatabases requires 0 args")
 			flag.Usage()
 		}
@@ -278,7 +278,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "alter_database":
-		if flag.NArg() - 1 != 2 {
+		if flag.NArg()-1 != 2 {
 			fmt.Fprintln(os.Stderr, "AlterDatabase requires 2 args")
 			flag.Usage()
 		}
@@ -305,7 +305,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_type":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetType requires 1 args")
 			flag.Usage()
 		}
@@ -315,7 +315,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "create_type":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "CreateType requires 1 args")
 			flag.Usage()
 		}
@@ -340,7 +340,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "drop_type":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "DropType requires 1 args")
 			flag.Usage()
 		}
@@ -350,7 +350,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_type_all":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetTypeAll requires 1 args")
 			flag.Usage()
 		}
@@ -360,7 +360,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_fields":
-		if flag.NArg() - 1 != 2 {
+		if flag.NArg()-1 != 2 {
 			fmt.Fprintln(os.Stderr, "GetFields requires 2 args")
 			flag.Usage()
 		}
@@ -372,7 +372,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_schema":
-		if flag.NArg() - 1 != 2 {
+		if flag.NArg()-1 != 2 {
 			fmt.Fprintln(os.Stderr, "GetSchema requires 2 args")
 			flag.Usage()
 		}
@@ -384,7 +384,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "create_table":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "CreateTable requires 1 args")
 			flag.Usage()
 		}
@@ -409,7 +409,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "drop_table":
-		if flag.NArg() - 1 != 3 {
+		if flag.NArg()-1 != 3 {
 			fmt.Fprintln(os.Stderr, "DropTable requires 3 args")
 			flag.Usage()
 		}
@@ -423,7 +423,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_tables":
-		if flag.NArg() - 1 != 2 {
+		if flag.NArg()-1 != 2 {
 			fmt.Fprintln(os.Stderr, "GetTables requires 2 args")
 			flag.Usage()
 		}
@@ -435,7 +435,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_all_tables":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetAllTables requires 1 args")
 			flag.Usage()
 		}
@@ -445,7 +445,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_table":
-		if flag.NArg() - 1 != 2 {
+		if flag.NArg()-1 != 2 {
 			fmt.Fprintln(os.Stderr, "GetTable requires 2 args")
 			flag.Usage()
 		}
@@ -457,7 +457,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "alter_table":
-		if flag.NArg() - 1 != 3 {
+		if flag.NArg()-1 != 3 {
 			fmt.Fprintln(os.Stderr, "AlterTable requires 3 args")
 			flag.Usage()
 		}
@@ -486,7 +486,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "add_partition":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "AddPartition requires 1 args")
 			flag.Usage()
 		}
@@ -511,7 +511,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "append_partition":
-		if flag.NArg() - 1 != 3 {
+		if flag.NArg()-1 != 3 {
 			fmt.Fprintln(os.Stderr, "AppendPartition requires 3 args")
 			flag.Usage()
 		}
@@ -541,7 +541,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "append_partition_by_name":
-		if flag.NArg() - 1 != 3 {
+		if flag.NArg()-1 != 3 {
 			fmt.Fprintln(os.Stderr, "AppendPartitionByName requires 3 args")
 			flag.Usage()
 		}
@@ -555,7 +555,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "drop_partition":
-		if flag.NArg() - 1 != 4 {
+		if flag.NArg()-1 != 4 {
 			fmt.Fprintln(os.Stderr, "DropPartition requires 4 args")
 			flag.Usage()
 		}
@@ -587,7 +587,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "drop_partition_by_name":
-		if flag.NArg() - 1 != 4 {
+		if flag.NArg()-1 != 4 {
 			fmt.Fprintln(os.Stderr, "DropPartitionByName requires 4 args")
 			flag.Usage()
 		}
@@ -603,7 +603,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_partition":
-		if flag.NArg() - 1 != 3 {
+		if flag.NArg()-1 != 3 {
 			fmt.Fprintln(os.Stderr, "GetPartition requires 3 args")
 			flag.Usage()
 		}
@@ -633,7 +633,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_partition_with_auth":
-		if flag.NArg() - 1 != 5 {
+		if flag.NArg()-1 != 5 {
 			fmt.Fprintln(os.Stderr, "GetPartitionWithAuth requires 5 args")
 			flag.Usage()
 		}
@@ -683,7 +683,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_partition_by_name":
-		if flag.NArg() - 1 != 3 {
+		if flag.NArg()-1 != 3 {
 			fmt.Fprintln(os.Stderr, "GetPartitionByName requires 3 args")
 			flag.Usage()
 		}
@@ -697,7 +697,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_partitions":
-		if flag.NArg() - 1 != 3 {
+		if flag.NArg()-1 != 3 {
 			fmt.Fprintln(os.Stderr, "GetPartitions requires 3 args")
 			flag.Usage()
 		}
@@ -716,7 +716,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_partitions_with_auth":
-		if flag.NArg() - 1 != 5 {
+		if flag.NArg()-1 != 5 {
 			fmt.Fprintln(os.Stderr, "GetPartitionsWithAuth requires 5 args")
 			flag.Usage()
 		}
@@ -755,7 +755,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_partition_names":
-		if flag.NArg() - 1 != 3 {
+		if flag.NArg()-1 != 3 {
 			fmt.Fprintln(os.Stderr, "GetPartitionNames requires 3 args")
 			flag.Usage()
 		}
@@ -774,7 +774,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_partitions_ps":
-		if flag.NArg() - 1 != 4 {
+		if flag.NArg()-1 != 4 {
 			fmt.Fprintln(os.Stderr, "GetPartitionsPs requires 4 args")
 			flag.Usage()
 		}
@@ -811,7 +811,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_partitions_ps_with_auth":
-		if flag.NArg() - 1 != 6 {
+		if flag.NArg()-1 != 6 {
 			fmt.Fprintln(os.Stderr, "GetPartitionsPsWithAuth requires 6 args")
 			flag.Usage()
 		}
@@ -868,7 +868,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_partition_names_ps":
-		if flag.NArg() - 1 != 4 {
+		if flag.NArg()-1 != 4 {
 			fmt.Fprintln(os.Stderr, "GetPartitionNamesPs requires 4 args")
 			flag.Usage()
 		}
@@ -905,7 +905,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_partitions_by_filter":
-		if flag.NArg() - 1 != 4 {
+		if flag.NArg()-1 != 4 {
 			fmt.Fprintln(os.Stderr, "GetPartitionsByFilter requires 4 args")
 			flag.Usage()
 		}
@@ -926,7 +926,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "alter_partition":
-		if flag.NArg() - 1 != 3 {
+		if flag.NArg()-1 != 3 {
 			fmt.Fprintln(os.Stderr, "AlterPartition requires 3 args")
 			flag.Usage()
 		}
@@ -955,7 +955,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_config_value":
-		if flag.NArg() - 1 != 2 {
+		if flag.NArg()-1 != 2 {
 			fmt.Fprintln(os.Stderr, "GetConfigValue requires 2 args")
 			flag.Usage()
 		}
@@ -967,7 +967,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "partition_name_to_vals":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "PartitionNameToVals requires 1 args")
 			flag.Usage()
 		}
@@ -977,7 +977,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "partition_name_to_spec":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "PartitionNameToSpec requires 1 args")
 			flag.Usage()
 		}
@@ -987,7 +987,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "add_index":
-		if flag.NArg() - 1 != 2 {
+		if flag.NArg()-1 != 2 {
 			fmt.Fprintln(os.Stderr, "AddIndex requires 2 args")
 			flag.Usage()
 		}
@@ -1029,7 +1029,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "alter_index":
-		if flag.NArg() - 1 != 4 {
+		if flag.NArg()-1 != 4 {
 			fmt.Fprintln(os.Stderr, "AlterIndex requires 4 args")
 			flag.Usage()
 		}
@@ -1060,7 +1060,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "drop_index_by_name":
-		if flag.NArg() - 1 != 4 {
+		if flag.NArg()-1 != 4 {
 			fmt.Fprintln(os.Stderr, "DropIndexByName requires 4 args")
 			flag.Usage()
 		}
@@ -1076,7 +1076,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_index_by_name":
-		if flag.NArg() - 1 != 3 {
+		if flag.NArg()-1 != 3 {
 			fmt.Fprintln(os.Stderr, "GetIndexByName requires 3 args")
 			flag.Usage()
 		}
@@ -1090,7 +1090,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_indexes":
-		if flag.NArg() - 1 != 3 {
+		if flag.NArg()-1 != 3 {
 			fmt.Fprintln(os.Stderr, "GetIndexes requires 3 args")
 			flag.Usage()
 		}
@@ -1109,7 +1109,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_index_names":
-		if flag.NArg() - 1 != 3 {
+		if flag.NArg()-1 != 3 {
 			fmt.Fprintln(os.Stderr, "GetIndexNames requires 3 args")
 			flag.Usage()
 		}
@@ -1128,7 +1128,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "create_role":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "CreateRole requires 1 args")
 			flag.Usage()
 		}
@@ -1153,7 +1153,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "drop_role":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "DropRole requires 1 args")
 			flag.Usage()
 		}
@@ -1163,7 +1163,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_role_names":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "GetRoleNames requires 0 args")
 			flag.Usage()
 		}
@@ -1171,7 +1171,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "grant_role":
-		if flag.NArg() - 1 != 6 {
+		if flag.NArg()-1 != 6 {
 			fmt.Fprintln(os.Stderr, "GrantRole requires 6 args")
 			flag.Usage()
 		}
@@ -1201,7 +1201,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "revoke_role":
-		if flag.NArg() - 1 != 3 {
+		if flag.NArg()-1 != 3 {
 			fmt.Fprintln(os.Stderr, "RevokeRole requires 3 args")
 			flag.Usage()
 		}
@@ -1220,7 +1220,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "list_roles":
-		if flag.NArg() - 1 != 2 {
+		if flag.NArg()-1 != 2 {
 			fmt.Fprintln(os.Stderr, "ListRoles requires 2 args")
 			flag.Usage()
 		}
@@ -1237,7 +1237,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_privilege_set":
-		if flag.NArg() - 1 != 3 {
+		if flag.NArg()-1 != 3 {
 			fmt.Fprintln(os.Stderr, "GetPrivilegeSet requires 3 args")
 			flag.Usage()
 		}
@@ -1282,7 +1282,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "list_privileges":
-		if flag.NArg() - 1 != 3 {
+		if flag.NArg()-1 != 3 {
 			fmt.Fprintln(os.Stderr, "ListPrivileges requires 3 args")
 			flag.Usage()
 		}
@@ -1316,7 +1316,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "grant_privileges":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GrantPrivileges requires 1 args")
 			flag.Usage()
 		}
@@ -1341,7 +1341,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "revoke_privileges":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "RevokePrivileges requires 1 args")
 			flag.Usage()
 		}
@@ -1366,7 +1366,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_delegation_token":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetDelegationToken requires 1 args")
 			flag.Usage()
 		}
@@ -1376,7 +1376,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "get_delegation_token_with_signature":
-		if flag.NArg() - 1 != 2 {
+		if flag.NArg()-1 != 2 {
 			fmt.Fprintln(os.Stderr, "GetDelegationTokenWithSignature requires 2 args")
 			flag.Usage()
 		}
@@ -1388,7 +1388,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "renew_delegation_token":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "RenewDelegationToken requires 1 args")
 			flag.Usage()
 		}
@@ -1398,7 +1398,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "cancel_delegation_token":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "CancelDelegationToken requires 1 args")
 			flag.Usage()
 		}
@@ -1408,7 +1408,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "getName":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "GetName requires 0 args")
 			flag.Usage()
 		}
@@ -1416,7 +1416,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "getVersion":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "GetVersion requires 0 args")
 			flag.Usage()
 		}
@@ -1424,7 +1424,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "getStatus":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "GetStatus requires 0 args")
 			flag.Usage()
 		}
@@ -1432,7 +1432,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "getStatusDetails":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "GetStatusDetails requires 0 args")
 			flag.Usage()
 		}
@@ -1440,7 +1440,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "getCounters":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "GetCounters requires 0 args")
 			flag.Usage()
 		}
@@ -1448,7 +1448,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "getCounter":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetCounter requires 1 args")
 			flag.Usage()
 		}
@@ -1458,7 +1458,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "setOption":
-		if flag.NArg() - 1 != 2 {
+		if flag.NArg()-1 != 2 {
 			fmt.Fprintln(os.Stderr, "SetOption requires 2 args")
 			flag.Usage()
 		}
@@ -1470,7 +1470,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "getOption":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetOption requires 1 args")
 			flag.Usage()
 		}
@@ -1480,7 +1480,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "getOptions":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "GetOptions requires 0 args")
 			flag.Usage()
 		}
@@ -1488,7 +1488,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "getCpuProfile":
-		if flag.NArg() - 1 != 1 {
+		if flag.NArg()-1 != 1 {
 			fmt.Fprintln(os.Stderr, "GetCpuProfile requires 1 args")
 			flag.Usage()
 		}
@@ -1503,7 +1503,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "aliveSince":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "AliveSince requires 0 args")
 			flag.Usage()
 		}
@@ -1511,7 +1511,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "reinitialize":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "Reinitialize requires 0 args")
 			flag.Usage()
 		}
@@ -1519,7 +1519,7 @@ func main() {
 		fmt.Print("\n")
 		break
 	case "shutdown":
-		if flag.NArg() - 1 != 0 {
+		if flag.NArg()-1 != 0 {
 			fmt.Fprintln(os.Stderr, "Shutdown requires 0 args")
 			flag.Usage()
 		}

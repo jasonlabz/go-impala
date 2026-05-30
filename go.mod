@@ -1,3 +1,5 @@
 module github.com/jasonlabz/go-impala
 
-go 1.26.3
+go 1.25.9
+
+require github.com/apache/thrift v0.23.0
